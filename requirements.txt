@@ -1,0 +1,8 @@
+numpy
+pandas
+pydantic
+uvicorn
+fastapi
+sqlalchemy
+aiomysql
+python-multipart

@@ -22,29 +22,3 @@ async def get_tasks(
 
     assert_access(tasks)
     return tasks
-
-
-@task_router.post("/", response_model=TaskResponse, status_code=201)
-async def create_task(
-    request: Request,
-    task_create: TaskCreate,
-    task_controller: TaskController = Depends(Factory().get_task_controller),
-) -> TaskResponse:
-    task = await task_controller.add(
-        title=task_create.title,
-        description=task_create.description,
-        author_id=request.user.id,
-    )
-    return task
-
-
-@task_router.get("/{task_uuid}", response_model=TaskResponse)
-async def get_task(
-    task_uuid: str,
-    task_controller: TaskController = Depends(Factory().get_task_controller),
-    assert_access: Callable = Depends(Permissions(TaskPermission.READ)),
-) -> TaskResponse:
-    task = await task_controller.get_by_uuid(task_uuid)
-
-    assert_access(task)
-    return task
